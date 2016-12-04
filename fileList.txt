@@ -1,0 +1,17 @@
+ReadGPS.py
+	Description:
+	Read data from the gps(lat, lon, altitude, velocity) and write 
+	to a .csv file
+
+ReadAccGyro.py
+	Description:
+	Detect launch, start reading data from accelerometer and gyroscope. 
+	Save data to a file. Start motor 4 seconds after launch is detected
+
+saveVideo.py
+	Description:
+	Capture video and save it
+
+SendData.py
+	Description:
+	Read data from .csv files, format data, and send via xbee
