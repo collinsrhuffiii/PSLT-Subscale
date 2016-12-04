@@ -5,7 +5,7 @@ camera = PiCamera()
 
 camera.start_preview()
 camera.start_recording("/media/pi/Samsung USB/video.h264")
-time.sleep(10)
+time.sleep(30)
 camera.stop_recording()
 camera.stop_preview()
 
