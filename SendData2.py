@@ -19,8 +19,8 @@ FREQ = float(open("/home/pi/Desktop/PSLT-Subscale/FREQ.txt", 'r').read())
 
 while(not quit):
 	try:
-		gpsData = get_last_row("/home/pi/Desktop/PSLT-Subscale/GPSData.csv")
-		agData = get_last_row("/home/pi/Desktop/PSLT-Subscale/lsm/AccGyroData.csv")
+		gpsData = get_last_row("/home/pi/Desktop/PSLT-Subscale/GPSData2.csv")
+		agData = get_last_row("/home/pi/Desktop/PSLT-Subscale/lsm/AccGyroData2.csv")
 
 		dataList = [index] + gpsData + agData
 
