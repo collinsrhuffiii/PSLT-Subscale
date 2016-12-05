@@ -15,7 +15,7 @@ def get_last_row(csv_filename):
 ser = serial.Serial("/dev/ttyUSB0", 9600)
 quit = False;
 index = 0
-FREQ = 10
+FREQ = float(open("/home/pi/Desktop/PSLT-Subscale/FREQ.txt", 'r').read())
 
 while(not quit):
 	try:
