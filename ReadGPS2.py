@@ -1,12 +1,15 @@
 import gps
 import csv
 import time
+from datetime import datetime
+
+print "ReadGPS2.py is starting"
 
 session = gps.gps("localhost", "2947")
 session.stream(gps.WATCH_ENABLE | gps.WATCH_NEWSTYLE)
 
-quit = False
 FREQ = float(open("/home/pi/Desktop/PSLT-Subscale/FREQ.txt", 'r').read())
+quit = False
 
 while(not quit):
 	try:
@@ -20,15 +23,18 @@ while(not quit):
 				data += str(report.lon) + ","
 			if hasattr(report, "climb"):
 				data += str(report.climb) + ","
-			if hasattr(report, "altitude"):
-				data += str(report.altitude) + ","
+			if hasattr(report, "alt"):
+				data += str(report.alt) + ","
 			if hasattr(report, "speed"):
 				data += str(report.speed) + ","
-			if hasattr(report, "time"):
-				data += str(report.time)
+			data += str(datetime.now())
 			dataFile.write(data)
+			
+		dataFile.close()
 
 		time.sleep(1.0 / FREQ)
 		
 	except KeyboardInterrupt:
 		quit = True
+
+print "ReadGPS2.py is ending"

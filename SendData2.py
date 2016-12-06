@@ -3,12 +3,18 @@ import serial
 import csv
 from collections import deque
 
+print "SendData2.py is starting"
+
 def get_last_row(csv_filename):
-	with open(csv_filename, 'rb') as f:
-		try:
-			lastrow = deque(csv.reader(f), 1)[0]
-		except IndexError:  # empty file
-			lastrow = None
+	try:
+		with open(csv_filename, 'rb') as f:
+			try:
+				lastrow = deque(csv.reader(f), 1)[0]
+			except IndexError:  # empty file
+				lastrow = None
+	except IOError:
+		lastrow = None
+			
 	return lastrow
 
 
@@ -19,24 +25,26 @@ FREQ = float(open("/home/pi/Desktop/PSLT-Subscale/FREQ.txt", 'r').read())
 
 while(not quit):
 	try:
-		gpsData = get_last_row("/home/pi/Desktop/PSLT-Subscale/GPSData2.csv")
-		agData = get_last_row("/home/pi/Desktop/PSLT-Subscale/lsm/AccGyroData2.csv")
+		gpsData = get_last_row("/home/pi/Desktop/PSLT-Subscale/Data/GPSData2.csv")
+		agData = get_last_row("/home/pi/Desktop/PSLT-Subscale/Data/AccGyroData2.csv")
 
-		dataList = [index] + gpsData + agData
+		if(not ((gpsData == None) or (agData == None))):
+			dataList = [index] + gpsData + agData
 
-		data = ""
-		for d in dataList:
-			data += str(d) + ','
-		data = data[:-1]
-		data += '\n'
+			data = ""
+			for d in dataList:
+				data += str(d) + ','
+			data = data[:-1]
+			data += '\n'
 
-		print data
-		ser.write(data)
+			#print data
+			ser.write(data)
 
-		index += 1
+			index += 1
 		
 		time.sleep(1.0 / FREQ)
+		
 	except KeyboardInterrupt:
 		quit = True
 
-print "Sent " + str(index) + " packets"
+print "SendData2.py is ending"
