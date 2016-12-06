@@ -59,7 +59,6 @@ def update():
 	curve1.setData(alt)
 	curve2.setData(vel)
 	curve3.setData(acc)
-     #curve4.setData(alt[ptr])
 	
      
 timer = QtCore.QTimer()
@@ -69,7 +68,7 @@ timer.start(50)
 
 
 
-## Start Qt event loop unless running in interactive mode or using pyside.
+
 if __name__ == '__main__':
     import sys
     if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
