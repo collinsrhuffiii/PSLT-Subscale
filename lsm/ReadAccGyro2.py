@@ -32,6 +32,9 @@ while(not quit):
 
 		gyroList = imu.trackGyroAngles(deltaT = deltaT)
 		data += "," + str(gyroList[0]) + "," + str(gyroList[1]) + "," +str(gyroList[2])
+		
+		data += ","
+		data += "1" if (motorState == 1) else "0"
 
 		data += "," + str(datetime.now())
 
