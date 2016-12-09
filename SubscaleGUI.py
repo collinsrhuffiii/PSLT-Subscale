@@ -28,16 +28,25 @@ pg.setConfigOptions(antialias=True)
 
 alt = np.array(df[df.columns[3]].values) * 3.2808
 p1 = win.addPlot(title="Altitude")
+p1.setRange(xRange = [0,500],yRange=[0, 3000])
+p1.setLabel('bottom', 'Time(s)')
+p1.setLabel('left', 'Altitude(ft)')
 curve1 = p1.plot(pen='y')
 
 vel = np.array(df[df.columns[2]].values) * 3.2808
 p2 = win.addPlot(title="Velocity")
+p2.setRange(xRange = [0,500],yRange=[0, 500])
+p2.setLabel('bottom', 'Time(s)')
+p2.setLabel('left', 'Velocity(ft/s)')
 curve2 = p2.plot(pen='c')
 
 win.nextRow()
 
 acc = np.array(df[df.columns[1]].values)
 p3 = win.addPlot(title="Acceleration")
+p3.setRange(xRange = [0,500],yRange=[0, 600])
+p3.setLabel('bottom', 'Time(s)')
+p3.setLabel('left', 'Acceleration(g)')
 curve3 = p3.plot(pen='m')
 
 p4 = win.addPlot(title = "Rotation")
