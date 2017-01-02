@@ -171,8 +171,8 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
 
         # Calculate complementary filtered angles
         self.complementaryAngles = [None if (gyrRates[i] is None or accelAngles[i] is None)
-            else self.C_FILTER_CONST * (self.complementaryAngles[i] + gyrRates[i] * deltaT)
-            + (1 - self.C_FILTER_CONST) * accelAngles[i]
+            else C_FILTER_CONST * (self.complementaryAngles[i] + gyrRates[i] * deltaT)
+            + (1 - C_FILTER_CONST) * accelAngles[i]
             for i in range(3)]
 
         # Return vector
@@ -246,14 +246,14 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
          self.kalmanXP_10,
          self.kalmanXP_11,
          self.kalmanBiasX,
-         self.kalmanX) = _calculateKalmanAngle(accAngleX,
+         self.kalmanAngleX) = _calculateKalmanAngle(accAngleX,
                                                gyrRateX,
                                                self.kalmanXP_00,
                                                self.kalmanXP_01,
                                                self.kalmanXP_10,
                                                self.kalmanXP_11,
                                                self.kalmanBiasX,
-                                               self.kalmanX,
+                                               self.kalmanAngleX,
                                                deltaT)
 
         # Y axis
@@ -262,14 +262,14 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
          self.kalmanYP_10,
          self.kalmanYP_11,
          self.kalmanBiasY,
-         self.kalmanY) = _calculateKalmanAngle(accAngleY,
+         self.kalmanAngleY) = _calculateKalmanAngle(accAngleY,
                                                gyrRateY,
                                                self.kalmanYP_00,
                                                self.kalmanYP_01,
                                                self.kalmanYP_10,
                                                self.kalmanYP_11,
                                                self.kalmanBiasY,
-                                               self.kalmanY,
+                                               self.kalmanAngleY,
                                                deltaT)
         # Z axis
         (self.kalmanZP_00,
@@ -277,15 +277,15 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
          self.kalmanZP_10,
          self.kalmanZP_11,
          self.kalmanBiasZ,
-         self.kalmanZ) = _calculateKalmanAngle(accAngleZ,
+         self.kalmanAngleZ) = _calculateKalmanAngle(accAngleZ,
                                                gyrRateZ,
                                                self.kalmanZP_00,
                                                self.kalmanZP_01,
                                                self.kalmanZP_10,
                                                self.kalmanZP_11,
                                                self.kalmanBiasZ,
-                                               self.kalmanZ,
+                                               self.kalmanAngleZ,
                                                deltaT)
 
         # Return vector
-        return [self.kalmanX, self.kalmanY, self.kalmanZ]
+        return [self.kalmanAngleX, self.kalmanAngleY, self.kalmanAngleZ]

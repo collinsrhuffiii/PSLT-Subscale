@@ -26,10 +26,15 @@ print "Beginning transmission\n"
 
 p4 = subprocess.Popen("python SendData.py", shell=True)
 
+startTime = time.time()
+
 quit = False
 
 while(not quit):
 	try:
+		if((time.time() - startTime) > 600):
+			quit = True
+		
 		time.sleep(0.01)
 	
 	except KeyboardInterrupt:

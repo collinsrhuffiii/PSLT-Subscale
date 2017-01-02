@@ -21,7 +21,7 @@ p = GPIO.PWM(23, 5120)
 
 while(not quit):
 	try:
-		dataFile = open("/home/pi/Desktop/PSLT-Subscale/Data/AccGyroData.csv", "a")
+		dataFile = open("/home/pi/Desktop/PSLT-Subscale/Data/AccGyroData2.csv", "a")
 		data = "\n"
 		stop = datetime.now() - start
 		start = datetime.now()
@@ -42,7 +42,7 @@ while(not quit):
 		dataFile.close()
 
 
-		if((abs(accList[1] / 8000.0) > 2) & (launchTime == -1)):
+		if((abs(accList[0] / 8000.0) > 2) & (launchTime == -1)):
 			launchTime = time.time()
 			launched = True
 			print "Launched!"

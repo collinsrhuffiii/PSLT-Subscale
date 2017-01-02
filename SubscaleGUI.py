@@ -15,6 +15,7 @@ import math
 
 
 df = pd.read_csv("exData.csv")
+#print df
 
 app = QtGui.QApplication([])
 # mw = QtGui.QMainWindow()
@@ -26,25 +27,25 @@ win.setWindowTitle('PSLT Subscale')
 
 pg.setConfigOptions(antialias=True)
 
-alt = np.array(df[df.columns[3]].values) * 3.2808
+alt = np.array(df[df.columns[4]].values) * 3.2808
 p1 = win.addPlot(title="Altitude")
-p1.setRange(xRange = [0,500],yRange=[0, 3000])
+p1.setRange(yRange=[0, 3000])
 p1.setLabel('bottom', 'Time(s)')
 p1.setLabel('left', 'Altitude(ft)')
 curve1 = p1.plot(pen='y')
 
-vel = np.array(df[df.columns[2]].values) * 3.2808
+vel = np.array(df[df.columns[3]].values) * 3.2808
 p2 = win.addPlot(title="Velocity")
-p2.setRange(xRange = [0,500],yRange=[0, 500])
+p2.setRange(yRange=[0, 500])
 p2.setLabel('bottom', 'Time(s)')
 p2.setLabel('left', 'Velocity(ft/s)')
 curve2 = p2.plot(pen='c')
 
 win.nextRow()
 
-acc = np.array(df[df.columns[1]].values)
+acc = np.array(df[df.columns[8]].values)
 p3 = win.addPlot(title="Acceleration")
-p3.setRange(xRange = [0,500],yRange=[0, 600])
+p3.setRange(yRange=[-5, 15])
 p3.setLabel('bottom', 'Time(s)')
 p3.setLabel('left', 'Acceleration(g)')
 curve3 = p3.plot(pen='m')
@@ -58,7 +59,7 @@ for r in range(2, 20, 2):
     circle.setPen(pg.mkPen(0.2))
     p4.addItem(circle)
    
-angle = math.radians(df.iloc[0][9])
+angle = math.radians(df.iloc[-1][11])
 theta = np.linspace(angle, angle, 100)
 radius = np.linspace(0, 18, 100)
 
@@ -82,21 +83,22 @@ def update():
 	acc = np.array(df[df.columns[8]].values)
 	lat = np.array(df[df.columns[1]].values)
 	lon = np.array(df[df.columns[2]].values)
-	angle = math.radians(df.iloc[-1][9])
+	angle = math.radians(df.iloc[-1][11])
 	
-	curve1.setData(alt)
-	curve2.setData(vel)
-	curve3.setData(acc)
-	
-	theta = np.linspace(angle, angle, 100)
-	radius = np.linspace(0, 18, 100)
-	x1 = radius * np.cos(theta)
-	y1 = radius * np.sin(theta)
-	if(df.iloc[-1][13] == 1):
-		curve4.setData(y1,x1, pen='g')
-	else:
-		curve4.setData(y1,x1, pen='r')
-# 	curve5.setData(lon, lat)
+	if(len(df.columns) == 16):
+		curve1.setData(alt)
+		curve2.setData(vel)
+		curve3.setData(acc)
+
+		theta = np.linspace(angle, angle, 100)
+		radius = np.linspace(0, 18, 100)
+		x1 = radius * np.cos(theta)
+		y1 = radius * np.sin(theta)
+		if(df.iloc[-1][13] == 1):
+			curve4.setData(y1,x1, pen='g')
+		else:
+			curve4.setData(y1,x1, pen='r')
+	# 	curve5.setData(lon, lat)
 	
      
 timer = QtCore.QTimer()
