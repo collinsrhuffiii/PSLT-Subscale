@@ -3,6 +3,8 @@ import time
 import csv
 from altimu import AltIMU
 import RPi.GPIO as GPIO
+import os
+import math
 
 print "ReadAccGyro2.py is starting"
 
@@ -13,7 +15,7 @@ FREQ = float(open("/home/pi/Desktop/PSLT-Subscale/FREQ.txt", 'r').read())
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup([21,23], GPIO.OUT)
 p = GPIO.PWM(23, 5120)
-start = datetime.now()
+start = time.time()
 launched = False
 launchTime = -1
 motorState = 0
