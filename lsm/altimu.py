@@ -56,9 +56,8 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
         self.kalmanAngleZ = 0.0
 
         ## Initialize complementary filter variables
-        self.complementaryAngleX = 0.0
-        self.complementaryAngleY = 0.0
-        self.complementaryAngleZ = 0.0
+        self.complementaryAngle = [0.0, 0.0, 0.0]
+        self.initComplementaryFromAccel = True
 
     def __del__(self):
         """ Cleanup routine. """
@@ -156,8 +155,8 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
         """
         # If accelerometer or gyroscope is not enabled or none of the
         # dimensions is requested make a quick turnaround
-        #if not (self.accelerometer and self.gyroscope and (x or y or z)):
-        #    return (None, None, None)
+        if not (self.accelerometer and self.gyroscope):
+            return (None, None, None)
         
         # Get gyroscope rotation rates and accelerometer angles
         gyrRates = self.getGyroRotationRates()
@@ -165,9 +164,9 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
 
         # Determine wether to initialize the complementary filter angles
         # from the accelerometer readings in the first iteration
-        #if self.initComplementaryFromAccel:
-        #    self.complementaryAngles = list(accelAngles)
-        #    self.initComplementaryFromAccel = False
+        if self.initComplementaryFromAccel:
+            self.complementaryAngles = list(accelAngles)
+            self.initComplementaryFromAccel = False
 
         # Calculate complementary filtered angles
         self.complementaryAngles = [None if (gyrRates[i] is None or accelAngles[i] is None)
