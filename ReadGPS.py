@@ -2,6 +2,7 @@ import gps
 import csv
 import time
 from datetime import datetime
+import os
 
 print "ReadGPS.py is starting"
 
@@ -16,53 +17,63 @@ lastClimb = 0.0
 lastAlt = 0.0
 lastSpeed = 0.0
 lastTrack = 0.0
+errs = 0
 
 while(not quit):
 	try:
+		errs = 0
 		report = session.next()
-		dataFile = open("/home/pi/Desktop/PSLT-Subscale/Data/GPSData.csv", "a")
-		data = "\n"
-		if report["class"] == "TPV":
-			if hasattr(report, "lat"):
-				data += str(report.lat) + ","
-				lastLat = report.lat
-			else:
-				data += str(lastLat) + ","
-				
-			if hasattr(report, "lon"):
-				data += str(report.lon) + ","
-				lastLon = report.lon
-			else:
-				data += str(lastLon) + ","
-				
-			if hasattr(report, "climb"):
-				data += str(report.climb) + ","
-				lastClimb = report.climb
-			else:
-				data += str(lastClimb) + ","
-				
-			if hasattr(report, "alt"):
-				data += str(report.alt) + ","
-				lastAlt = report.alt
-			else:
-				data += str(lastAlt) + ","
-				
-			if hasattr(report, "speed"):
-				data += str(report.speed) + ","
-				lastSpeed = report.speed
-			else:
-				data += str(lastSpeed) + ","
-				
-			if hasattr(report, "track"):
-				data += str(report.track) + ","
-				lastTrack = report.track
-			else:
-				data += str(lastTrack) + ","
+		with open("/home/pi/Desktop/PSLT-Subscale/Data/GPSData.csv", "a") as dataFile:
+			data = "\n"
+			if report["class"] == "TPV":
+				if hasattr(report, "lat"):
+					data += str(report.lat) + ","
+					lastLat = report.lat
+				else:
+					data += str(lastLat) + ","
+					errs += 1
 
-			data += str(datetime.now())
-			dataFile.write(data)
-						
-		dataFile.close()
+				if hasattr(report, "lon"):
+					data += str(report.lon) + ","
+					lastLon = report.lon
+				else:
+					data += str(lastLon) + ","
+					errs += 1
+
+				if hasattr(report, "climb"):
+					data += str(report.climb) + ","
+					lastClimb = report.climb
+				else:
+					data += str(lastClimb) + ","
+					errs += 1
+
+				if hasattr(report, "alt"):
+					data += str(report.alt) + ","
+					lastAlt = report.alt
+				else:
+					data += str(lastAlt) + ","
+					errs += 1
+
+				if hasattr(report, "speed"):
+					data += str(report.speed) + ","
+					lastSpeed = report.speed
+				else:
+					data += str(lastSpeed) + ","
+					errs += 1
+
+				if hasattr(report, "track"):
+					data += str(report.track) + ","
+					lastTrack = report.track
+				else:
+					data += str(lastTrack) + ","
+					errs += 1
+
+				data += str(errs) + ","
+				data += str(datetime.now())
+				dataFile.write(data)
+				
+				dataFile.flush()
+				os.fsync(dataFile.fileno())
 			
 		time.sleep(1.0 / FREQ)
 		
