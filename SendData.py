@@ -7,7 +7,7 @@ print "SendData.py is starting"
 
 def get_last_row(csv_filename):
 	try:
-		with open(csv_filename, 'rb') as f:
+		with open(csv_filename, "rb") as f:
 			try:
 				lastrow = deque(csv.reader(f), 1)[0]
 			except IndexError:  # empty file

@@ -23,7 +23,7 @@ while(not quit):
 	try:
 		errs = 0
 		report = session.next()
-		with open("/home/pi/Desktop/PSLT-Subscale/Data/GPSData.csv", "a") as dataFile:
+		with open("/home/pi/Desktop/PSLT-Subscale/Data/GPSData.csv", "ab") as dataFile:
 			data = "\n"
 			if report["class"] == "TPV":
 				if hasattr(report, "lat"):
