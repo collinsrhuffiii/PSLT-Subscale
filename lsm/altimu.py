@@ -69,6 +69,11 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
                gyroscope = True, magnetometer = True,
                temperature = True):
         """ Enable the given devices. """
+        self.accelerometer = accelerometer
+        self.barometer = barometer
+        self.gyroscope = gyroscope
+        self.magnetometer = magnetometer
+        self.temperature = temperature
         # Enable LSM6DS33 if accelerometer and/or gyroscope are requested
         if accelerometer or gyroscope:
             self.enableLSM(accelerometer = accelerometer,
