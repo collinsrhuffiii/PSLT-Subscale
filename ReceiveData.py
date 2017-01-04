@@ -13,8 +13,8 @@ quit = False
 while(not quit):
 	try:
 		data = ser.readline()
-		if(len(data.split(',')) == 16):
-			with open("exData.csv", 'a') as f:
+		if(len(data.split(',')) == 22):
+			with open("exData.csv", 'ab') as f:
 				f.write(data)
 
 			dataList = data.split(',')
