@@ -104,7 +104,7 @@ while(not quit):
 				data += str(lastMagList[2]) + ","
 				errs += 1
 
-			rot = math.degrees(math.atan2(lastMagList[1], lastMagList[2]))
+			rot = math.degrees(math.atan2(lastMagList[1], lastMagList[2]) + math.pi)
 			data += str(rot) + ","
 
 			data += "1," if (motorState == 1) else "0,"
