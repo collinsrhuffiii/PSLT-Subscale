@@ -4,8 +4,7 @@ import csv
 from altimu import AltIMU
 import os
 import math
-import fusion
-
+from fusion import Fusion
 print "ReadAccGyro.py is starting"
 
 imu = AltIMU()
