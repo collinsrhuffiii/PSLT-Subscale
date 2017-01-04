@@ -4,6 +4,7 @@ import csv
 from altimu import AltIMU
 import os
 import math
+import fusion
 
 print "ReadAccGyro.py is starting"
 
@@ -18,6 +19,8 @@ lastGyroList = [0.0, 0.0, 0.0]
 lastMagList = [0.0, 0.0, 0.0]
 lastRot = 0.0
 errs = 0
+
+fus = Fusion()
 
 while(not quit):
 	try:
@@ -97,7 +100,9 @@ while(not quit):
 				data += str(lastMagList[2]) + ","
 				errs += 1
 			
-			rot = math.degrees(math.atan2(lastMagList[1], lastMagList[2]) + math.pi)
+			fus.update(tuple(imu.getAccelerometerRaw()), tuple(imu.getGyroRotationRates()), tuple(imu.getMagnetometerRaw()))
+			#rot = math.degrees(math.atan2(lastMagList[1], lastMagList[2]) + math.pi)
+			rot = fus.heading
 			data += str(rot) + ","
 
 			data += "0,"
