@@ -29,7 +29,7 @@ errs = 0
 while(not quit):
 	try:
 		errs = 0
-		with open("/home/pi/Desktop/PSLT-Subscale/Data/AccGyroData.csv", "ab") as dataFile:	
+		with open("/home/pi/Desktop/PSLT-Subscale/Data/AccGyroData2.csv", "ab") as dataFile:	
 			data = "\n"
 
 			accList = imu.getAccelerometerRaw()
