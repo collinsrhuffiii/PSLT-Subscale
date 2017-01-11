@@ -116,7 +116,7 @@ while(not quit):
 			dataFile.flush()
 			os.fsync(dataFile.fileno())
 
-		if((abs(lastAccList[0] / 8000.0) > 2) & (launchTime == -1)):
+		if(((lastAccList[0] / 4000.0) > 1) & (launchTime == -1)):
 			launchTime = time.time()
 			launched = True
 			print "Launched!"
