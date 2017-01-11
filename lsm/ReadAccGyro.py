@@ -30,24 +30,24 @@ while(not quit):
 			accList = imu.getAccelerometerRaw()
 
 			if(not (accList[0] == None)):
-				data += str(accList[0] / 8000.0) + ","
+				data += str(accList[0] / 4000.0) + ","
 				lastAccList[0] = accList[0]
 			else:
-				data += str(lastAccList[0] / 8000.0) + ","
+				data += str(lastAccList[0] / 4000.0) + ","
 				errs += 1
 
 			if(not (accList[1] == None)):
-				data += str(accList[1] / 8000.0) + ","
+				data += str(accList[1] / 4000.0) + ","
 				lastAccList[1] = accList[1]
 			else:
-				data += str(lastAccList[1] / 8000.0) + ","
+				data += str(lastAccList[1] / 4000.0) + ","
 				errs += 1
 
 			if(not (accList[2] == None)):
-				data += str(accList[2] / 8000.0) + ","
+				data += str(accList[2] / 4000.0) + ","
 				lastAccList[2] = accList[2]
 			else:
-				data += str(lastAccList[2] / 8000.0) + ","
+				data += str(lastAccList[2] / 4000.0) + ","
 				errs += 1
 
 			stop = time.time() - start
