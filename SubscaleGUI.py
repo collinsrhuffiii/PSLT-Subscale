@@ -19,8 +19,8 @@ accCol = 9
 latCol = 1
 lonCol = 2
 angleCol = 18
-motorCol = 19
-timeCol = 21
+motorCol = 20
+timeCol = 22
 
 df = pd.read_csv("exData.csv")
 #print df
@@ -93,7 +93,7 @@ def update():
 	lon = np.array(df[df.columns[lonCol]].values)
 	angle = math.radians(df.iloc[-1][angleCol])
 	
-	if(len(df.columns) == 22):
+	if(len(df.columns) == 23):
 		curve1.setData(alt)
 		curve2.setData(vel)
 		curve3.setData(acc)

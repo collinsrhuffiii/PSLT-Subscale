@@ -4,7 +4,6 @@ import csv
 from altimu import AltIMU
 import os
 import math
-from fusion import Fusion
 print "ReadAccGyro.py is starting"
 
 imu = AltIMU()
@@ -16,10 +15,7 @@ start = time.time()
 lastAccList = [0.0, 0.0, 0.0]
 lastGyroList = [0.0, 0.0, 0.0]
 lastMagList = [0.0, 0.0, 0.0]
-lastRot = 0.0
 errs = 0
-
-fus = Fusion()
 
 while(not quit):
 	try:
@@ -30,24 +26,24 @@ while(not quit):
 			accList = imu.getAccelerometerRaw()
 
 			if(not (accList[0] == None)):
-				data += str(accList[0] / 4000.0) + ","
+				data += str(accList[0] / 4098.0) + ","
 				lastAccList[0] = accList[0]
 			else:
-				data += str(lastAccList[0] / 4000.0) + ","
+				data += str(lastAccList[0] / 4098.0) + ","
 				errs += 1
 
 			if(not (accList[1] == None)):
-				data += str(accList[1] / 4000.0) + ","
+				data += str(accList[1] / 4098.0) + ","
 				lastAccList[1] = accList[1]
 			else:
-				data += str(lastAccList[1] / 4000.0) + ","
+				data += str(lastAccList[1] / 4098.0) + ","
 				errs += 1
 
 			if(not (accList[2] == None)):
-				data += str(accList[2] / 4000.0) + ","
+				data += str(accList[2] / 4098.0) + ","
 				lastAccList[2] = accList[2]
 			else:
-				data += str(lastAccList[2] / 4000.0) + ","
+				data += str(lastAccList[2] / 4098.0) + ","
 				errs += 1
 
 			stop = time.time() - start
@@ -99,10 +95,11 @@ while(not quit):
 				data += str(lastMagList[2]) + ","
 				errs += 1
 			
-			fus.update(tuple(imu.getAccelerometerRaw()), tuple(imu.getGyroRotationRates()), tuple(imu.getMagnetometerRaw()))
-			#rot = math.degrees(math.atan2(lastMagList[1], lastMagList[2]) + math.pi)
-			rot = fus.heading
+			rot = math.degrees(math.atan2(lastMagList[1], lastMagList[2]) + math.pi) + 180.0
 			data += str(rot) + ","
+			
+			bar = imu.getAltitude()
+			data += str(bar) + ","
 
 			data += "0,"
 			data += str(errs) + ","
