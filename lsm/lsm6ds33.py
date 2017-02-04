@@ -186,14 +186,15 @@ class LSM6DS33(I2C):
             # Accelerometer
             # 1.66 kHz / +/- 4g
             # 01011000b
-            self._writeRegister(LSM6DS33_ADDR, self.LSM_CTRL1_XL, 0x58)
+            self._writeRegister(LSM6DS33_ADDR, self.LSM_CTRL1_XL, 0x5C)
             self.accEnabled = True
 
         if gyroscope:
             # Gyro
             # 208 Hz high performance / 1000 dps
             # 01011000b
-            self._writeRegister(LSM6DS33_ADDR, self.LSM_CTRL2_G, 0x58)
+            self._writeRegister(LSM6DS33_ADDR, self.LSM_CTRL2_G, 0x5C)
+            self._writeRegister(LSM6DS33_ADDR, self.LSM_ORIENT_CFG_G, 0x00)
             self.gyroEnabled = True
 
         if temperature:
@@ -222,7 +223,7 @@ class LSM6DS33(I2C):
             raise(Exception('Gyroscope has to be enabled first'))
 
         # Read sensor data
-        return self._getSensorRawLoHi3(LSM6DS33_ADDR, self.lsmAccRegisters)
+        return self._getSensorRawLoHi3(LSM6DS33_ADDR, self.lsmGyroRegisters)
 
 
     def getLSMTemperatureRaw(self):

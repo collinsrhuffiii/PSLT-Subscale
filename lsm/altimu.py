@@ -56,9 +56,8 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
         self.kalmanAngleZ = 0.0
 
         ## Initialize complementary filter variables
-        self.complementaryAngleX = 0.0
-        self.complementaryAngleY = 0.0
-        self.complementaryAngleZ = 0.0
+        self.complementaryAngle = [0.0, 0.0, 0.0]
+        self.initComplementaryFromAccel = True
 
     def __del__(self):
         """ Cleanup routine. """
@@ -70,6 +69,11 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
                gyroscope = True, magnetometer = True,
                temperature = True):
         """ Enable the given devices. """
+        self.accelerometer = accelerometer
+        self.barometer = barometer
+        self.gyroscope = gyroscope
+        self.magnetometer = magnetometer
+        self.temperature = temperature
         # Enable LSM6DS33 if accelerometer and/or gyroscope are requested
         if accelerometer or gyroscope:
             self.enableLSM(accelerometer = accelerometer,
@@ -156,8 +160,8 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
         """
         # If accelerometer or gyroscope is not enabled or none of the
         # dimensions is requested make a quick turnaround
-        #if not (self.accelerometer and self.gyroscope and (x or y or z)):
-        #    return (None, None, None)
+        if not (self.accelerometer and self.gyroscope):
+            return (None, None, None)
         
         # Get gyroscope rotation rates and accelerometer angles
         gyrRates = self.getGyroRotationRates()
@@ -165,14 +169,14 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
 
         # Determine wether to initialize the complementary filter angles
         # from the accelerometer readings in the first iteration
-        #if self.initComplementaryFromAccel:
-        #    self.complementaryAngles = list(accelAngles)
-        #    self.initComplementaryFromAccel = False
+        if self.initComplementaryFromAccel:
+            self.complementaryAngles = list(accelAngles)
+            self.initComplementaryFromAccel = False
 
         # Calculate complementary filtered angles
         self.complementaryAngles = [None if (gyrRates[i] is None or accelAngles[i] is None)
-            else self.C_FILTER_CONST * (self.complementaryAngles[i] + gyrRates[i] * deltaT)
-            + (1 - self.C_FILTER_CONST) * accelAngles[i]
+            else C_FILTER_CONST * (self.complementaryAngles[i] + gyrRates[i] * deltaT)
+            + (1 - C_FILTER_CONST) * accelAngles[i]
             for i in range(3)]
 
         # Return vector
@@ -246,14 +250,14 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
          self.kalmanXP_10,
          self.kalmanXP_11,
          self.kalmanBiasX,
-         self.kalmanX) = _calculateKalmanAngle(accAngleX,
+         self.kalmanAngleX) = _calculateKalmanAngle(accAngleX,
                                                gyrRateX,
                                                self.kalmanXP_00,
                                                self.kalmanXP_01,
                                                self.kalmanXP_10,
                                                self.kalmanXP_11,
                                                self.kalmanBiasX,
-                                               self.kalmanX,
+                                               self.kalmanAngleX,
                                                deltaT)
 
         # Y axis
@@ -262,14 +266,14 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
          self.kalmanYP_10,
          self.kalmanYP_11,
          self.kalmanBiasY,
-         self.kalmanY) = _calculateKalmanAngle(accAngleY,
+         self.kalmanAngleY) = _calculateKalmanAngle(accAngleY,
                                                gyrRateY,
                                                self.kalmanYP_00,
                                                self.kalmanYP_01,
                                                self.kalmanYP_10,
                                                self.kalmanYP_11,
                                                self.kalmanBiasY,
-                                               self.kalmanY,
+                                               self.kalmanAngleY,
                                                deltaT)
         # Z axis
         (self.kalmanZP_00,
@@ -277,15 +281,15 @@ class AltIMU(LIS3MDL, LPS25H, LSM6DS33):
          self.kalmanZP_10,
          self.kalmanZP_11,
          self.kalmanBiasZ,
-         self.kalmanZ) = _calculateKalmanAngle(accAngleZ,
+         self.kalmanAngleZ) = _calculateKalmanAngle(accAngleZ,
                                                gyrRateZ,
                                                self.kalmanZP_00,
                                                self.kalmanZP_01,
                                                self.kalmanZP_10,
                                                self.kalmanZP_11,
                                                self.kalmanBiasZ,
-                                               self.kalmanZ,
+                                               self.kalmanAngleZ,
                                                deltaT)
 
         # Return vector
-        return [self.kalmanX, self.kalmanY, self.kalmanZ]
+        return [self.kalmanAngleX, self.kalmanAngleY, self.kalmanAngleZ]

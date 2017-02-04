@@ -1,5 +1,6 @@
 from picamera import PiCamera
 import time
+import os
 
 print "RecordVideo2.py is starting"
 
@@ -7,10 +8,14 @@ quit = False
 
 with PiCamera() as camera:
 	#camera.start_preview()
-	camera.start_recording("/media/pi/Samsung USB/video2.h264")
+	videoFile = open("/media/pi/Samsung USB/video2.h264", "wb")
+	camera.start_recording(videoFile)
 
 	while(not quit):
 		try:
+			videoFile.flush()
+			os.fsync(videoFile.fileno())
+			
 			time.sleep(0.01)
 
 		except KeyboardInterrupt:
